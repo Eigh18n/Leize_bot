@@ -4,8 +4,7 @@ from hoshino import Service
 sv = Service("原神帮助")
 
 
-help_txt = '''
-「卢皮卡」想要了解我，我会的，不多。
+help_txt = '''「卢皮卡」想要了解我，我会的，不多。
 https://shimo.im/docs/9RwRHRyqk8ptgCRt
 '''
 
