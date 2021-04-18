@@ -5,18 +5,30 @@ from nonebot import on_command
 from hoshino import R, Service, priv, util
 
 
+
+
 # basic function for debug, not included in Service('chat')
 @on_command('zai?', aliases=('在?', '在？', '在吗', '在么？', '在嘛', '在嘛？'), only_to_me=True)
 async def say_hello(session):
-    await session.send('はい！私はいつも貴方の側にいますよ！')
-
+    await session.send('我在，朋友。')
 
 sv = Service('chat', visible=False)
 
 @sv.on_fullmatch('雷泽')
 async def say_calling(bot, ev):
-    await bot.send(ev, '你的气味···好闻。一起狩猎吧！')
+    await bot.send(ev, random.choice(['你的气味···好闻。一起狩猎吧！','唔，兔子的味道…','风...唔...舒服。','我是狼。人的爸爸、妈妈，没有。','你是朋友，我和你一起狩猎。']))
 
+@sv.on_fullmatch(('早', '早上好', '早安', '早啊'))
+async def say_morning(session):
+    await bot.send(ev, '太阳出来了。狩猎一起去？' )
+
+@sv.on_fullmatch(('午安', '中午好', '午好'))
+async def say_afternoon(session):
+    await bot.send(ev, '大块吃肉，开心！')
+
+@sv.on_fullmatch(('晚', '晚好', '晚安', '晚上好', '群晚安', '睡了'))
+async def say_night(session):
+    await bot.send(ev, random.choice(['你去睡觉吧，我看月亮。', '你睡觉，我看守，明天一起狩猎。]))
 
 # @sv.on_fullmatch(('老婆', 'waifu', 'laopo'), only_to_me=True)
 # async def chat_waifu(bot, ev):
