@@ -1,6 +1,5 @@
 increase_welcome = {
-    "default": "欢迎入群！",
-    1000000: "欢迎新群员",
+    "default": "欢迎，你是，「卢皮卡」吗？"
 }
 
 join_approve = {
