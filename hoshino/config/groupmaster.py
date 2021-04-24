@@ -1,5 +1,7 @@
+import random
+
 increase_welcome = {
-    "default": "欢迎，你是，「卢皮卡」吗？"
+    "default": random.choice(["欢迎，你是，「卢皮卡」吗？", "欢迎入群，我是雷泽", "欢迎，一起狩猎吗？"])
 }
 
 join_approve = {

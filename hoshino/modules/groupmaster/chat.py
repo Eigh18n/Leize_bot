@@ -16,19 +16,31 @@ sv = Service('chat', visible=False)
 
 @sv.on_fullmatch('雷泽')
 async def say_calling(bot, ev):
-    await bot.send(ev, random.choice(['你的气味···好闻。一起狩猎吧！','唔，兔子的味道…','风...唔...舒服。','我是狼。人的爸爸、妈妈，没有。','你是朋友，我和你一起狩猎。']))
+    await bot.send(ev, random.choice(['你的气味···好闻。一起狩猎吧！','唔，兔子的味道…','风...唔...舒服。','我是狼。人的爸爸、妈妈，没有。','你是朋友，我和你一起狩猎。']), at_sender=True)
 
 @sv.on_fullmatch(('早', '早上好', '早安', '早啊'))
 async def say_morning(bot, ev):
-    await bot.send(ev, '太阳出来了。狩猎一起去？' )
+    await bot.send(ev, '太阳出来了。狩猎一起去？', at_sender=True)
 
 @sv.on_fullmatch(('午安', '中午好', '午好'))
 async def say_afternoon(bot, ev):
-    await bot.send(ev, '大块吃肉，开心！')
+    await bot.send(ev, '大块吃肉，开心！', at_sender=True)
 
 @sv.on_fullmatch(('晚', '晚好', '晚安', '晚上好', '群晚安', '睡了'))
 async def say_night(bot, ev):
-    await bot.send(ev, random.choice(['你去睡觉吧，我看月亮。', '你睡觉，我看守，明天一起狩猎。']))
+    await bot.send(ev, random.choice(['你去睡觉吧，我看月亮。', '你睡觉，我看守，明天一起狩猎。']), at_sender=True)
+
+@sv.on_fullmatch(('丽莎'))
+async def say_member1(bot, ev):
+    await bot.send(ev, '师父的雷，天空会变黑。很可怕，很强。', at_sender=True)
+
+@sv.on_fullmatch(('迪卢克'))
+async def say_member2(bot, ev):
+    await bot.send(ev, '迪卢克，红红的、黑黑的。又冷又热。', at_sender=True)
+
+@sv.on_fullmatch(('芭芭拉'))
+async def say_member3(bot, ev):
+    await bot.send(ev, '芭芭拉，亮晶晶的女孩子。很善良。', at_sender=True)
 
 # @sv.on_fullmatch(('老婆', 'waifu', 'laopo'), only_to_me=True)
 # async def chat_waifu(bot, ev):

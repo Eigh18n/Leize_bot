@@ -4,8 +4,8 @@
 
 # 原神抽卡
 
-Gacha10Limit = 100 # 10连每天可以抽的次数
-Gacha90Limit = 50 # 90连每天可以抽的次数
+Gacha10Limit = 50 # 10连每天可以抽的次数
+Gacha90Limit = 30 # 90连每天可以抽的次数
 Gacha180Limit = 10  # 180连每天可以抽的次数
 
 
