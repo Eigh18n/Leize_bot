@@ -32,15 +32,37 @@ async def say_night(bot, ev):
 
 @sv.on_fullmatch(('丽莎'))
 async def say_member1(bot, ev):
-    await bot.send(ev, '师父的雷，天空会变黑。很可怕，很强。', at_sender=True)
+    await bot.send(ev, '师父的雷，天空会变黑。很可怕，很强。')
 
 @sv.on_fullmatch(('迪卢克'))
 async def say_member2(bot, ev):
-    await bot.send(ev, '迪卢克，红红的、黑黑的。又冷又热。', at_sender=True)
+    await bot.send(ev, '迪卢克，红红的、黑黑的。又冷又热。')
 
 @sv.on_fullmatch(('芭芭拉'))
 async def say_member3(bot, ev):
-    await bot.send(ev, '芭芭拉，亮晶晶的女孩子。很善良。', at_sender=True)
+    await bot.send(ev, '芭芭拉，亮晶晶的女孩子。很善良。')
+
+@sv.on_fullmatch(('温迪'))
+async def say_member4(bot, ev):
+    await bot.send(ev, '诗歌…嗯...不明白。虽然不明白，「卢皮卡」喜欢。')
+
+@sv.on_fullmatch(('班尼特'))
+async def say_member5(bot, ev):
+    await bot.send(ev, '班尼特，话很多，和他一起，吃不饱。')
+
+@sv.on_fullmatch(('可莉'))
+async def say_member6(bot, ev):
+    await bot.send(ev, '可莉，朋友。朋友，但是，头疼。')
+
+@sv.on_prefix("群发")
+async def message_all(bot, ev):
+    if session.ctx['user_id'] in nonebot.get_bot().config.SUPERUSERS:
+        txt = ev.message.extract_plain_text().strip().lower()
+        if txt == "":
+            return
+        await bot.broadcast(txt, 'all', 0.5)
+    else:
+        return
 
 # @sv.on_fullmatch(('老婆', 'waifu', 'laopo'), only_to_me=True)
 # async def chat_waifu(bot, ev):
