@@ -43,4 +43,6 @@ MODULES_ON = {
     # 'translate',
     # 'twitter',
     'Genshin',
+    'genshinuid', 
+    'genshingachalog', 
 }
