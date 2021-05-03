@@ -60,7 +60,7 @@ async def message_all(bot, ev):
         txt = ev.message.extract_plain_text().strip().lower()
         if txt == "":
             return
-        await bot.broadcast(txt, 'all', 0)
+        await sv.broadcast(txt, 'all', 0)
     else:
         return
 
