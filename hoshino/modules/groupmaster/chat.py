@@ -56,7 +56,7 @@ async def say_member6(bot, ev):
 
 @sv.on_prefix("群发")
 async def message_all(bot, ev):
-    if session.ctx['user_id'] in nonebot.get_bot().config.SUPERUSERS:
+    if priv.check_priv(ev, priv.SUPERUSER):
         txt = ev.message.extract_plain_text().strip().lower()
         if txt == "":
             return
