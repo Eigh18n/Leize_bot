@@ -25,7 +25,7 @@ async def inquire_resource_list(bot , ev):
         data = {
             "type": "node",
             "data": {
-                "name": "机器人",
+                "name": "色图机器人",
                 "uin": "2854196310",
                 "content":txt
                     }
