@@ -118,7 +118,7 @@ def GetInfo(Uid, ServerID):
                 'Accept': 'application/json, text/plain, */*',
                 'DS': DSGet(),
                 'Origin': 'https://webstatic.mihoyo.com',
-                'Cookie': '',#自己获取
+                'Cookie': '_MHYUUID=1f3f032f-b940-4715-8aa6-4242c3e51d9b; mi18nLang=zh-cn; UM_distinctid=17a84f8cccc434-0eaa8592662eb2-7a697e6d-144000-17a84f8cccdf33; CNZZDATA1275023096=735411482-1625728223-%7C1625999643; _gid=GA1.2.1638585015.1626004149; _ga=GA1.1.521961237.1625728537; _ga_KJ6J9V9VZQ=GS1.1.1626004167.1.1.1626004200.0; login_uid=288148019; login_ticket=IrXNZxW8Btqcd8ypiTFEJMpOBouk1emgH9K5I3pl; account_id=288148019; cookie_token=Px3xdYs8S8Of6teFAlhHt4TySUh9SLSG3LplF7TD; ltoken=eKk0nQw8Hbv4MnoZiixyGSwEG71dAoTqgHlcMQbE; ltuid=288148019',#自己获取
                 'x-rpc-app_version': mhyVersion,
                 'User-Agent': 'Mozilla/5.0 (Linux; Android 9; Unspecified Device) AppleWebKit/537.36 (KHTML, like Gecko) Version/4.0 Chrome/39.0.0.0 Mobile Safari/537.36 miHoYoBBS/2.2.0',
                 'x-rpc-client_type': '2',
