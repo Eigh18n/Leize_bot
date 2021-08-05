@@ -45,4 +45,6 @@ MODULES_ON = {
     'Genshin',
     'genshinuid', 
     'genshingachalog', 
+    'ysInfo',
+    'portune'
 }
