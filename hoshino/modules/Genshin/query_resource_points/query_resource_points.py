@@ -11,18 +11,19 @@ import base64
 
 LABEL_URL      = 'https://api-static.mihoyo.com/common/blackboard/ys_obc/v1/map/label/tree?app_sn=ys_obc'
 POINT_LIST_URL = 'https://api-static.mihoyo.com/common/blackboard/ys_obc/v1/map/point/list?map_id=2&app_sn=ys_obc'
+MAP_URL = "https://api-static.mihoyo.com/common/map_user/ys_obc/v1/map/info?map_id=2&app_sn=ys_obc&lang=zh-cn"
 
 header = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/84.0.4147.105 Safari/537.36'
 
 FILE_PATH = os.path.dirname(__file__)
 
-MAP_PATH = os.path.join(os.path.dirname(FILE_PATH),"seek_god_eye","icon","map_icon.jpg")
-MAP_IMAGE = Image.open(MAP_PATH)
-MAP_SIZE = MAP_IMAGE.size
+MAP_PATH = os.path.join(FILE_PATH,"icon","map_icon.jpg")
 
 
-# resource_point里记录的坐标是相对坐标，是以蒙德城的大雕像为中心的，所以图片合成时需要转换坐标
-CENTER = (3505,1907)
+# 这3个常量放在up_map()函数里更新
+# MAP_IMAGE = None
+# MAP_SIZE = None
+CENTER = None
 
 
 zoom = 0.75
@@ -67,6 +68,54 @@ data = {
     "date":"" #记录上次更新"all_resource_point_list"的日期
 }
 
+def download_icon(url):
+    # 下载分块的地图图片文件
+    # 返回 Image
+    schedule = request.Request(url)
+    schedule.add_header('User-Agent', header)
+
+    with request.urlopen(schedule) as f:
+        icon = Image.open(f)
+        return icon
+
+
+def update_map_icon():
+    # 更新地图文件
+    print("正在更新地图文件")
+    schedule = request.Request(MAP_URL)
+    schedule.add_header('User-Agent', header)
+
+    with request.urlopen(schedule) as f:
+        rew_data = f.read().decode('utf-8')
+        data = json.loads(rew_data)["data"]["info"]["detail"]
+        data = json.loads(data)
+
+    map_url_list = data['slices']
+    map_size = data["total_size"]
+    map_padding = data["padding"]
+    x,y = [0,0]
+    map_back = Image.new("RGB",map_size)
+    for w in range(len(map_url_list)):
+        x = 0
+        for h in range(len(map_url_list[w])):
+            url = map_url_list[w][h]['url']
+            icon = download_icon(url)
+            map_back.paste(icon,[x,y])
+
+            x += icon.size[0]
+
+        url = map_url_list[w][-1]['url']
+        icon = download_icon(url)
+        y += icon.size[1]
+
+    # map_back = map_back.crop([map_padding[0],
+    #                           map_padding[1],
+    #                           map_size[0] - map_padding[0],
+    #                           map_size[1] - map_padding[1]])
+
+    with open(MAP_PATH, "wb") as jpg:
+        map_back.save(jpg)
+
 
 
 def up_icon_image(sublist):
@@ -77,6 +126,7 @@ def up_icon_image(sublist):
     icon_path = os.path.join(FILE_PATH,"icon",f"{id}.png")
 
     if not os.path.exists(icon_path):
+        print(f"正在更新图标 {id}")
         schedule = request.Request(icon_url)
         schedule.add_header('User-Agent', header)
         with request.urlopen(schedule) as f:
@@ -134,20 +184,32 @@ def up_label_and_point_list():
     data["date"] = time.strftime("%d")
 
 
+def up_map(re_download_map = False):
+    # global MAP_IMAGE
+    # global MAP_SIZE
+    global CENTER
 
-# def load_resource_type_id():
-#     with open(os.path.join(FILE_PATH,'resource_type_id.json'), 'r', encoding='UTF-8') as f:
-#         json_data = json.load(f)
-#         for id in json_data.keys():
-#             data["all_resource_type"][id] = json_data[id]
-#             if json_data[id]["depth"] != 1:
-#                 data["can_query_type_list"][json_data[id]["name"]] = id
+    if (not os.path.exists(MAP_PATH)) or (re_download_map):
+        update_map_icon()
+
+    # MAP_IMAGE = Image.open(MAP_PATH)
+    # MAP_SIZE = MAP_IMAGE.size
+
+    schedule = request.Request(MAP_URL)
+    schedule.add_header('User-Agent', header)
+    with request.urlopen(schedule) as f:
+        rew_data = f.read().decode('utf-8')
+        data = json.loads(rew_data)["data"]["info"]["detail"]
+        data = json.loads(data)
+
+    CENTER = data["origin"]
+
+
 
 
 # 初始化
-# load_resource_type_id()
 up_label_and_point_list()
-
+up_map()
 
 
 
@@ -157,18 +219,18 @@ class Resource_map(object):
     def __init__(self,resource_name):
         self.resource_id = str(data["can_query_type_list"][resource_name])
 
+        self.map_image = Image.open(MAP_PATH)
+        self.map_size = self.map_image.size
+
         # 地图要要裁切的左上角和右下角坐标
         # 这里初始化为地图的大小
-        self.x_start = MAP_SIZE[0]
-        self.y_start = MAP_SIZE[1]
+        self.x_start = self.map_size[0]
+        self.y_start = self.map_size[1]
         self.x_end = 0
         self.y_end = 0
 
-        self.map_image = MAP_IMAGE.copy()
-
         self.resource_icon = Image.open(self.get_icon_path())
         self.resource_icon = self.resource_icon.resize((int(150*zoom),int(150*zoom)))
-
 
         self.resource_xy_list = self.get_resource_point_list()
 
@@ -195,16 +257,20 @@ class Resource_map(object):
     def paste(self):
         for x,y in self.resource_xy_list:
             # 把资源图片贴到地图上
+            # 这时地图已经裁切过了，要以裁切后的地图左上角为中心再转换一次坐标
+            x -= self.x_start
+            y -= self.y_start
             self.map_image.paste(self.resource_icon,(x + resource_icon_offset[0] , y + resource_icon_offset[1]),self.resource_icon)
-
-            # 找出4个方向最远的坐标，用于后边裁切
-            self.x_start = min(x,self.x_start)
-            self.y_start = min(y,self.y_start)
-            self.x_end = max(x,self.x_end)
-            self.y_end = max(y,self.y_end)
 
 
     def crop(self):
+        # 把大地图裁切到只保留资源图标位置
+        for x,y in self.resource_xy_list:
+            # 找出4个方向最远的坐标，用于后边裁切
+            self.x_start = min(x, self.x_start)
+            self.y_start = min(y, self.y_start)
+            self.x_end = max(x, self.x_end)
+            self.y_end = max(y, self.y_end)
 
         # 先把4个方向扩展150像素防止把资源图标裁掉
         self.x_start -= 150
@@ -229,9 +295,9 @@ class Resource_map(object):
         if not self.resource_xy_list:
             return "没有这个资源的信息"
 
-        self.paste()
-
         self.crop()
+
+        self.paste()
 
         bio = BytesIO()
         self.map_image.save(bio, format='JPEG')
