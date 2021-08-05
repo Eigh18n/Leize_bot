@@ -30,7 +30,7 @@ bot = get_bot()
 mhyVersion = "2.9.0"
 salt = "w5k9n3aqhoaovgw25l373ee18nsazydo" # Github-@Azure99
 client_type = "5"
-cache_Cookie = "" #自行获取
+cache_Cookie = "_MHYUUID=1f3f032f-b940-4715-8aa6-4242c3e51d9b; mi18nLang=zh-cn; UM_distinctid=17a84f8cccc434-0eaa8592662eb2-7a697e6d-144000-17a84f8cccdf33; CNZZDATA1275023096=735411482-1625728223-%7C1625999643; _gid=GA1.2.1638585015.1626004149; _ga=GA1.1.521961237.1625728537; _ga_KJ6J9V9VZQ=GS1.1.1626004167.1.1.1626004200.0; login_uid=288148019; login_ticket=IrXNZxW8Btqcd8ypiTFEJMpOBouk1emgH9K5I3pl; account_id=288148019; cookie_token=Px3xdYs8S8Of6teFAlhHt4TySUh9SLSG3LplF7TD; ltoken=eKk0nQw8Hbv4MnoZiixyGSwEG71dAoTqgHlcMQbE; ltuid=288148019" #自行获取
 
 FILE_PATH = os.path.dirname(__file__)
 FONTS_PATH = os.path.join(FILE_PATH,'fonts')
