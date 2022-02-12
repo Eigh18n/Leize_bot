@@ -48,10 +48,15 @@ XXX哪里有：查询XXX的位置图，XXX是资源的名字
 开启\关闭原神每日素材提醒  ： 开启或关闭本群的每日素材提醒  
 '''
 
+leize_help = '''
+请查看石墨文档：
+https://shimo.im/docs/9RwRHRyqk8ptgCRt/ 
+（发送原神帮助可查看文字版）
+'''
 
 @sv.on_fullmatch("雷泽会什么")
 async def help(bot, ev):
-    await bot.send(ev, help_txt)
+    await bot.send(ev, leize_help)
 
 @sv.on_fullmatch("原神帮助")
 async def help(bot, ev):
